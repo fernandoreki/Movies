@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import config from "../config/config";
 import Movie from "../interfaces/movie";
 import mongoose from "mongoose";
 import movie from "../interfaces/movie";
