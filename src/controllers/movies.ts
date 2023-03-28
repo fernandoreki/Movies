@@ -9,16 +9,18 @@ const getAll = (req: Request, res: Response) => {
     movie.find().then((movie) => {
         return res.send(movie);
     }).catch(err => {
-        return res.status(400).send("Movie does not exist");
+        return res.status(400).send(err);
     });
 };
 
 const get = (req: Request, res: Response) => {
     const id = req.params.id;
     //TODO search in DB for all movies
-    return res.status(200).json( {
-        data: {}
-    });
+    movie.findById(id).then((movie) => {
+        return res.send(movie);
+    }).catch(err => {
+        return res.status(400).send(err);
+    })
 };
 
 const create = async (req: Request, res: Response) => {
@@ -53,16 +55,22 @@ const update = (req: Request, res: Response) => {
     const id = req.params.id;
     const {title, year} = req.body;
     //TODO find by id and update in db
-    return res.status(200).json( {
-        data: {}
+    movie.findByIdAndUpdate(id, {title, year}).then((movie) => {
+        return res.send(movie);
+    }).catch(err => {
+        return res.status(400).send(err);
     });
 };
 
 const remove = (req: Request, res: Response) => {
     const id = req.params.id;
     //TODO search by id and delete
-    return res.status(200).json( {
-        data: {}
+    movie.findByIdAndDelete(id).then((movie) => {
+        return res.status(200).json({
+            message: 'Movie deleted successfully'
+        })
+    }).catch(err => {
+        return res.status(400).send(err);
     });
 };
 
