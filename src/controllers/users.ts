@@ -1,44 +1,44 @@
-import express, {Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from '../config/config';
 import User from '../interfaces/user';
-import mongoose  from 'mongoose';
+import mongoose from 'mongoose';
 
 
-const login = async (req: Request, res: Response ) => {
-    const {username, password} = req.body;
-    if(!username || !password) {
+const login = async (req: Request, res: Response) => {
+
+    const { username, password } = req.body;
+    if (!username || !password) {
         res.status(400).json({
             message: 'Login Failed'
         });
         return;
     }
 
-    const user = await User.findOne({username}).exec();
-    if(!user) return res.status(400).json({message: 'Invalid username or password'});
+    const user = await User.findOne({ username }).exec();
+    if (!user) return res.status(400).json({ message: 'Invalid username or password' })
 
     const validPassword = await bcrypt.compare(password, user.password);
-
-    if(!validPassword) {
+    if (!validPassword) {
         res.status(400).json({
             message: 'Login Failed'
         });
         return;
     }
 
-    const token = jwt.sign({username}, config.secrets.token);
-
+    const token = jwt.sign({ username }, config.secrets.token);
     return res.status(200).json({
         message: 'Login Sucess',
         token
     });
 };
 
-const register = async (req: Request, res: Response ) => {
 
-    const  {username, password} = req.body;
-    if(username === '' || password === '' || !username || !password) {
+const register = async (req: Request, res: Response) => {
+
+    const { username, password } = req.body;
+    if (username === '' || password === '' || !username || !password) {
         res.status(400).json({
             message: 'Username or password cannot be empty'
         });
@@ -69,4 +69,4 @@ const register = async (req: Request, res: Response ) => {
     //res.status(200).json({message: 'Register Sucess'});
 };
 
-export default {login, register};
+export default { login, register };

@@ -1,4 +1,6 @@
-export interface Movie {
+import { Document } from "mongoose";
+
+export interface Movie extends Document {
     title: string;
-    yesr: number;
+    year: string;
 }
